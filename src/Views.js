@@ -154,7 +154,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			
 				this.containers[zone_name].setView(null);
 			}
-		},
+		}
 	});
 	
 	
@@ -198,7 +198,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	var DropdownView = LikipeBackbone.DropdownView = Backbone.View.extend({
 		tagName: 'select',
 		events: {
-			'change': 'loadSelected',
+			'change': 'loadSelected'
 		},
 	
 		initialize: function() {
@@ -274,7 +274,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			window.clearTimeout(this._periodicRender);
 		
 			delete this._periodicRender;
-		},
+		}
 	};
 	
 	return LikipeBackbone;

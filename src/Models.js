@@ -64,7 +64,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			};
 			
 			Backbone.Model.prototype.destroy.call(this, options);
-		},
+		}
 	});
 	
 	/**
@@ -109,7 +109,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 		},
 		isStreaming: function() {
 			return ! _.isUndefined(this._streamUpdate);
-		},
+		}
 	};
 	
 	return LikipeBackbone;
