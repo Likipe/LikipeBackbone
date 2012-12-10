@@ -51,14 +51,15 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	 * closeZone() should clean up all the view-related data, the view does not have
 	 * to be closed, that happens automatically.
 	 */
-	var ViewZoneFactory = LikipeBackbone.ViewZoneFactory = function(options) {
-		_.extend(this, options);
-		
+	var ViewZoneFactory = LikipeBackbone.ViewZoneFactory = function() {
 		this.cid = _.uniqueId('viewZoneFactory');
 		this.initialize.apply(this, arguments);
 	};
 	
 	_.extend(ViewZoneFactory.prototype, Backbone.Events, {
+		/**
+		 * Constructor, receives the parameters sent to the real constructor.
+		 */
 		initialize: function() {},
 		/**
 		 * Returns the Backbone.View instance to be located in the zone
@@ -121,18 +122,18 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			if( ! _.has(this.zones, zone_name)) {
 				throw new Error("Invalid zone name " + zone_name + ".");
 			}
-		
+			
 			if(_.has(this.factories, zone_name)) {
 				if(this.factories[zone_name].cid == contents.cid) {
 					/* We already have this zone utilizing this factory */
 					return;
 				}
-			
+				
 				/* Destroy existing zone contents */
 				this.factories[zone_name].closeZone();
 				this.factories[zone_name].trigger("closed");
 			}
-		
+			
 			this.factories[zone_name] = contents;
 			this.containers[zone_name].setView(contents.createZone());
 			this.factories[zone_name].trigger("created");
