@@ -278,5 +278,153 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 		}
 	};
 	
+	/**
+	 * A Bootstrap Modal dialog.
+	 * 
+	 * Usage:
+	 * <code>
+	 * var wrapped_view = ...;
+	 * 
+	 * wrapped_view.performSave = function(modal) {
+	 *     ...
+	 *     // On success we do:
+	 *     modal.hide(); // or modal.enable() if we've changed the contents and want to enable the controls again
+	 * };
+	 * 
+	 * var modal = new BootstrapModal({
+	 *     view: wrapped_view,
+	 *     text: {
+	 *         title: "My Modal",
+	 *         save_button: "Save my modal!",
+	 *         cancel_button: "Meh :("
+	 *     }
+	 * });
+	 * 
+	 * modal.bind("modal:save", wrapped_view.performSave);
+	 * 
+	 * modal.render();
+	 * </code>
+	 * 
+	 * The text hash is optional.
+	 * 
+	 * Events:
+	 *   modal:save   Triggered when the save (blue) button is clicked, the save
+	 *                button also disable()s the modal, use enable() or showError()
+	 *                to enable it again.
+	 *                parameters: the modal view
+	 *   modal:hidden Triggered when the modal has been successfully been hidden
+	 *                which is triggered by either the cancel button, close button
+	 *                or by clicking outside the modal
+	 *   modal:shown  Triggered when the modal has ben successfully shown
+	 */
+	var BootstrapModal = LikipeBackbone.BootstrapModal = Backbone.View.extend({
+		/* TODO: What to do with this? Is this really acceptable? Any better way of integrating generic templates? */
+		template: _.template("<div class=\"modal hide\" style=\"display: none; \">\n\t<div class=\"modal-header\">\n\t\t<a href=\"javascript:void(0)\" class=\"close\">\u00d7<\/a>\n\t\t<h3><%=title%><\/h3>\n\t<\/div>\n\t<div class=\"alert alert-error hide\"><\/div>\n\t<div class=\"modal-body\"><\/div>\n\t<div class=\"modal-footer\">\n\t\t<a href=\"javascript:void(0)\" class=\"save btn btn-primary\"><%=save_button%><\/a>\n\t\t<a href=\"javascript:void(0)\" class=\"cancel btn btn-secondary\"><%=cancel_button%><\/a>\n\t<\/div>\n<\/div>"),
+		events: {
+			'click .save':   '_save',
+			'click .cancel': '_hide',
+			'click .close':  '_hide',
+			'hide':          '_tryHide',
+			'hidden':        '_hidden',
+			'shown':         '_shown'
+		},
+		
+		initialize: function(options) {
+			_.bindAll(this, 'hide', 'showError', 'disable');
+			
+			if( ! options.view) {
+				throw new Error("BootstrapModal: missing 'views' option.");
+			}
+			
+			this.view = options.view;
+			this.text = _.extend({
+				title: "Bootstrap Modal",
+				save_button: "Save",
+				cancel_button: "Cancel"
+			}, options.text || {});
+			
+			this.setElement(this.template(this.text));
+			this.$error = this.$el.children().filter('.alert-error');
+		},
+		render: function() {
+			this.$('.modal-body').html(this.view.render().el);
+			
+			/* TODO: Make this configurable */
+			this.$el.modal({
+				keyboard: true,
+				backdrop: true
+			});
+			
+			this.delegateEvents();
+			
+			this.$el.modal('show');
+		},
+		disable: function() {
+			this.$('.save').attr('disabled', 'disabled');
+			this.$('.cancel').attr('disabled', 'disabled');
+		},
+		enable: function() {
+			this.$('.save').removeAttr('disabled');
+			this.$('.cancel').removeAttr('disabled');
+		},
+		/**
+		 * Hides the modal, call this from the wrapped view or something else when
+		 * you want to close this modal.
+		 */
+		hide: function(e) {
+			this.enable();
+			this.$el.modal('hide');
+			
+			return false;
+		},
+		/**
+		 * Displays an error and enables the modal again.
+		 */
+		showError: function(error) {
+			this.enable();
+			
+			this.$error.html(error);
+			this.$error.show();
+		},
+		_save: function() {
+			this.disable();
+			
+			this.trigger("modal:save", this);
+			
+			return false;
+		},
+		_hide: function() {
+			this.$el.modal('hide');
+			
+			return false;
+		},
+		/**
+		 * Prevents the modal from hiding itself if we are disabled.
+		 * 
+		 * This is wanted if we for example have submitted a form
+		 * using the save button, then we don't want to close the
+		 * modal until after it has been submitted.
+		 */
+		_tryHide: function(e) {
+			if(this.$('.save').attr('disabled')) {
+				e.preventDefault();
+			}
+		},
+		/**
+		 * Removes the modal DOM when the modal is hidden.
+		 */
+		_hidden: function() {
+			this.trigger("modal:hidden", this);
+			
+			this.close();
+		},
+		_shown: function() {
+			/* Try to focus, so escape will work */
+			this.$('input:text:visible:first', this).focus();
+			
+			this.trigger("modal:shown", this);
+		}
+	});
+	
 	return LikipeBackbone;
 })(LikipeBackbone || {}, window, _, Backbone);
