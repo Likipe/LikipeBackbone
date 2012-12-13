@@ -1,5 +1,25 @@
 var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 
+	
+	/**
+	 * Populates the model with data for a specific model id from the server.
+	 */
+	Backbone.Model.prototype.fetchWithId = function(id, options) {
+		options = options ? _.clone(options) : {};
+		
+		if(typeof this.url == "function") {
+			var data = _.clone(this);
+			data.id = id;
+			
+			options.url = this.url.call(data);
+		}
+		else {
+			options.url = this.url + '/' + encodeURIComponent(id);
+		}
+		
+		return Backbone.Model.prototype.fetch.call(this, options);
+	};
+	
 	/**
 	 * Collection which puts a list of key-value pairs on the query string
 	 * for fetch actions. The Filterable name comes from the fact that query
