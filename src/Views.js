@@ -319,7 +319,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	 */
 	var BootstrapModal = LikipeBackbone.BootstrapModal = Backbone.View.extend({
 		/* TODO: What to do with this? Is this really acceptable? Any better way of integrating generic templates? */
-		template: _.template("<div class=\"modal hide\" style=\"display: none; \">\n\t<div class=\"modal-header\">\n\t\t<a href=\"javascript:void(0)\" class=\"close\">\u00d7<\/a>\n\t\t<h3><%=title%><\/h3>\n\t<\/div>\n\t<div class=\"alert alert-error hide\"><\/div>\n\t<div class=\"modal-body\"><\/div>\n\t<div class=\"modal-footer\">\n\t\t<a href=\"javascript:void(0)\" class=\"save btn btn-primary\"><%=save_button%><\/a>\n\t\t<a href=\"javascript:void(0)\" class=\"cancel btn btn-secondary\"><%=cancel_button%><\/a>\n\t<\/div>\n<\/div>"),
+		template: _.template("<div class=\"modal hide\" style=\"display: none; \">\n\t<div class=\"modal-header\">\n\t\t<a href=\"javascript:void(0)\" class=\"close\">\u00d7<\/a>\n\t\t<h3><%-title%><\/h3>\n\t<\/div>\n\t<div class=\"alert alert-error hide\"><\/div>\n\t<div class=\"modal-body\"><\/div>\n\t<div class=\"modal-footer\">\n\t\t<a href=\"javascript:void(0)\" class=\"save btn btn-primary\"><%-save_button%><\/a>\n\t\t<a href=\"javascript:void(0)\" class=\"cancel btn btn-secondary\"><%-cancel_button%><\/a>\n\t<\/div>\n<\/div>"),
 		events: {
 			'click .save':   '_save',
 			'click .cancel': '_hide',
