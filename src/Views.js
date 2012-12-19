@@ -199,13 +199,13 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	var DropdownView = LikipeBackbone.DropdownView = Backbone.View.extend({
 		tagName: 'select',
 		events: {
-			'change': 'loadSelected'
+			'change': 'onChange'
 		},
 	
 		initialize: function() {
-			_.bindAll(this, "render", "addItem", "loadSelected", "getSelectedId");
+			_.bindAll(this, "render", "addItem", "onChange", "getSelected");
 		
-			this.selected = null;
+			this.selected = this.options.selected || undefined;
 			this.options  = _.extend({ text: 'text' }, this.options);
 		
 			this.model.bind('change reset', this.render);
@@ -233,25 +233,25 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 				model: item,
 				text:  this.options.text
 			})).render().el;
-		
-			if(item.id == this.selected) {
+			
+			if(this.selected && item.id == this.selected.id) {
 				$(el).attr("selected", "selected");
 			}
-		
+			
 			this.$el.append(el);
 		},
-		loadSelected: function(e) {
-			this.selected = $(e.currentTarget).val();
+		onChange: function(e) {
+			this.selected = this.model.get($(e.currentTarget).val());
 			
 			this.trigger("change");
 		},
-		getSelectedId: function() {
+		getSelected: function() {
 			return this.selected;
 		},
-		setSelected: function(id, trigger) {
-			this.selected = id;
+		setSelected: function(model, trigger) {
+			this.selected = model;
 			this.removeSelected();
-			this.$('option[value=' + id + ']').attr("selected", "selected");
+			this.$('option[value=' + model.id + ']').attr("selected", "selected");
 			
 			if(trigger) {
 				this.trigger('change');
