@@ -1,5 +1,25 @@
 var LikipeBackbone = (function(LikipeBackbone) {
 	
+	var timezoneOffset = (new Date()).getTimezoneOffset() * 60000;
+	
+	/**
+	 * Converts a newly created Date object from local time to UTC time.
+	 * 
+	 * @param  Date
+	 * @return Date  copy
+	 */
+	var toUTCdate = LikipeBackbone.toUTCdate = function(date) {
+		return new Date(date.getTime() + timezoneOffset);
+	};
+	/**
+	 * Converts UTC time date object into a local time date object.
+	 * 
+	 * @param  Date
+	 * @return Date  copy
+	 */
+	var fromUTCdate = LikipeBackbone.fromUTCdate = function(date) {
+		return new Date(date.getTime() - timezoneOffset);
+	};
 	/**
 	 * Returns true if the parameter can be interpreted as a number.
 	 */
@@ -21,7 +41,7 @@ var LikipeBackbone = (function(LikipeBackbone) {
 			return new Date();
 		}
 	
-		return new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]);
+		return fromUTCdate(new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
 	};
 	/**
 	 * Returns a new Date instance which contains the difference between the
