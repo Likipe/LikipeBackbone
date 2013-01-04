@@ -8,7 +8,7 @@ var LikipeBackbone = (function(LikipeBackbone) {
 	 * @param  Date
 	 * @return Date  copy
 	 */
-	var toUTCdate = LikipeBackbone.toUTCdate = function(date) {
+	var toUTCDate = LikipeBackbone.toUTCDate = function(date) {
 		return new Date(date.getTime() + timezoneOffset);
 	};
 	/**
@@ -17,7 +17,7 @@ var LikipeBackbone = (function(LikipeBackbone) {
 	 * @param  Date
 	 * @return Date  copy
 	 */
-	var fromUTCdate = LikipeBackbone.fromUTCdate = function(date) {
+	var fromUTCDate = LikipeBackbone.fromUTCDate = function(date) {
 		return new Date(date.getTime() - timezoneOffset);
 	};
 	/**
@@ -41,7 +41,7 @@ var LikipeBackbone = (function(LikipeBackbone) {
 			return new Date();
 		}
 	
-		return fromUTCdate(new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
+		return fromUTCDate(new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
 	};
 	/**
 	 * Returns a new Date instance which contains the difference between the
