@@ -339,7 +339,7 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			_.bindAll(this, 'hide', 'showError', 'disable');
 			
 			if( ! options.view) {
-				throw new Error("BootstrapModal: missing 'views' option.");
+				throw new Error("BootstrapModal: missing 'view' option.");
 			}
 			
 			this.view = options.view;
