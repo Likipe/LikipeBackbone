@@ -206,10 +206,10 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	
 		initialize: function() {
 			_.bindAll(this, "render", "addItem", "onChange", "getSelected");
-		
-			this.selected = this.options.selected || undefined;
+			
 			this.options  = _.extend({ text: 'text' }, this.options);
-		
+			this.setSelected(this.options.selected || undefined);
+			
 			this.model.bind('change reset', this.render);
 			this.model.bind('add', this.addItem);
 		},
@@ -251,6 +251,10 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			return this.selected;
 		},
 		setSelected: function(model, trigger) {
+			if( ! model instanceof Backbone.Model) {
+				model = new Backbone.Model(model);
+			}
+			
 			this.selected = model;
 			this.removeSelected();
 			this.$('option[value=' + model.id + ']').attr("selected", "selected");
