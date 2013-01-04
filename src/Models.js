@@ -28,7 +28,14 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	 * The property filters decides what to filter.
 	 */
 	var FilterableCollection = LikipeBackbone.FilterableCollection = Backbone.Collection.extend({
-		fetch: function(options) {
+		constructor: function()
+		{
+			Backbone.Collection.apply(this, arguments);
+			
+			this.filters = this.filters || {};
+		},
+		fetch: function(options)
+		{
 			if(this.filters) {
 				options = options ? _.clone(options) : {};
 				
