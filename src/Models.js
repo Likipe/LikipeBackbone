@@ -30,9 +30,9 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	var FilterableCollection = LikipeBackbone.FilterableCollection = Backbone.Collection.extend({
 		constructor: function()
 		{
-			Backbone.Collection.apply(this, arguments);
-			
 			this.filters = this.filters || {};
+			
+			Backbone.Collection.apply(this, arguments);
 		},
 		fetch: function(options)
 		{
