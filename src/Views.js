@@ -1,6 +1,8 @@
 var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	
 	Backbone.View.prototype.close = function() {
+		this.trigger("close");
+		
 		this.remove();
 		this.unbind();
 		
