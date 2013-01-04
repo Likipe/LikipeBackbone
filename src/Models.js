@@ -56,6 +56,16 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	 * creating and updating (ie. if it exists, do an update).
 	 */
 	var SingularModel = LikipeBackbone.SingularModel = Backbone.Model.extend({
+		parse: function(response)
+		{
+			/* Check for 204 No Content */
+			if(response == null) {
+				/* Clear if we get no content */
+				this.clear();
+			}
+			
+			return response;
+		},
 		save: function(attributes, options) {
 			/*
 			 * This prevents a save() from issuing a POST on a singular resource
