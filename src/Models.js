@@ -125,10 +125,12 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 	var StreamModelMixin = LikipeBackbone.StreamModelMixin = {
 		stream: function(options) {
 			this.unstream();
-		
+			
 			this._streamUpdate = window.setInterval(_.bind(this.fetch, this, options), options.interval || 1000);
-		
-			this.fetch(options);
+			
+			if( ! options.noInitialFetch) {
+				this.fetch(options);
+			}
 		},
 		unstream: function() {
 			window.clearTimeout(this._streamUpdate);
