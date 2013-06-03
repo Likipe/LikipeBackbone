@@ -257,7 +257,10 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			
 			this.selected = model;
 			this.removeSelected();
-			this.$('option[value=' + model.id + ']').attr("selected", "selected");
+			
+			if(model) {
+				this.$('option[value=' + model.id + ']').attr("selected", "selected");
+			}
 			
 			if(trigger) {
 				this.trigger('change');
