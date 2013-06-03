@@ -210,11 +210,11 @@ var LikipeBackbone = (function(LikipeBackbone, window, _, Backbone) {
 			this.options  = _.extend({ text: 'text' }, this.options);
 			this.setSelected(this.options.selected || undefined);
 			
-			this.model.bind('change reset', this.render);
+			this.model.bind('change reset sync', this.render);
 			this.model.bind('add', this.addItem);
 		},
 		onClose: function() {
-			this.model.unbind('change reset', this.render);
+			this.model.unbind('change reset sync', this.render);
 			this.model.unbind('add', this.addItem);
 		},
 		render: function() {
